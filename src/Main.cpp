@@ -2,6 +2,8 @@
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 
+#include "Mesh.hpp"
+
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
@@ -38,6 +40,9 @@ int main()
 		return -1;
 	}
 
+	Mesh m;
+	m.loadVertices();
+
 	// Main loop.
 	while (!glfwWindowShouldClose(window))
 	{
@@ -48,8 +53,11 @@ int main()
 		}
 
 		// Cleaning the screen.
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Drawing.
+		glDrawArrays(GL_TRIANGLES, 0, m.get_vertices_count());
 
 		// Presenting the graphics.
 		glfwSwapBuffers(window);
