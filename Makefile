@@ -3,6 +3,7 @@ CXX_FLAGS := -Wall -Wextra -std=c++11 -ggdb -O3
 
 BIN		:= bin
 SRC		:= src
+SRC2	:= src/handlers
 INCLUDE	:= include
 LIB		:= lib
 
@@ -16,7 +17,7 @@ run: clean all
 	clear
 	./$(BIN)/$(EXECUTABLE)
 
-$(BIN)/$(EXECUTABLE): $(SRC)/*.c*
+$(BIN)/$(EXECUTABLE): $(SRC)/*.c* $(SRC2)/*.cpp
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
 
 clean:

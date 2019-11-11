@@ -1,13 +1,13 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
-#include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 class Shader
 {
@@ -15,7 +15,7 @@ class Shader
 		// The program's ID.
 		unsigned int id;
 		// The program's info.
-		std::string info;
+		std::string error_info;
 
 	public:
 	
@@ -30,9 +30,17 @@ class Shader
 		void set_int(const std::string &name, const int& value) const;
 		void set_float(const std::string &name, const float& value) const;
 
+		void set_vec2(const std::string& name, const glm::vec2& value) const;
+		void set_vec3(const std::string& name, const glm::vec3& value) const;
+		void set_vec4(const std::string& name, const glm::vec4& value) const;
+
+		void set_mat2(const std::string& name, const glm::mat2& value) const;
+		void set_mat3(const std::string& name, const glm::mat3& value) const;
+		void set_mat4(const std::string& name, const glm::mat4& value) const;
+
 		// Getters and setters.
 		unsigned int get_id() const;
-		std::string get_info() const;
+		std::string get_error_info() const;
 };
 
 #endif

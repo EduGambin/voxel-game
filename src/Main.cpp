@@ -1,74 +1,26 @@
 #include <iostream>
-#include "glad/glad.h"
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-#include "Mesh.hpp"
-#include "Shader.hpp"
-#include "Camera.hpp"
+#include "Application.hpp"
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+/* Camera our_camera; */
 
-float lastX = 0.0f;
-float lastY = 0.0f;
-
-Camera our_camera;
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+/* void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	our_camera.ProcessMouseMovement(xpos-lastX, lastY-ypos);
 	lastX = xpos;
 	lastY = ypos;
-}
+} */
 
 int main()
 {
-	// Initializing GLFW.
-	glfwInit();
+	Application app;
 
-	// Setting the OpenGL version.
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	// Setting the window options.
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-	glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
-	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-
-	// Creating the window.
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Minecraft", nullptr, nullptr);
-	if (window == nullptr)
+	if (app.init())
 	{
-		std::cerr << "Failed to create the GLFW window" << std::endl;
-		glfwTerminate();
+		std::cerr << "Failed to initialize the application" << std::endl;
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
-
-	// Initializing GLAD.
-	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-	{
-		std::cerr << "Failed to initialize GLAD" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	Shader our_shader;
-	if (our_shader.make_program("shaders/vertex.glsl", "shaders/fragment.glsl") == -1)
-	{
-		std::cerr << our_shader.get_info() << std::endl;
-		return -1;
-	}
-	our_shader.use();
-
-	// Enabling the depth test.
-	glEnable(GL_DEPTH_TEST);
-	glfwSetCursorPosCallback(window, mouse_callback);
-
+/* 
 	Mesh m;
 	m.update();
 
@@ -121,6 +73,8 @@ int main()
 
 	m.clean();
 	glfwDestroyWindow(window);
-	glfwTerminate();
+	glfwTerminate(); */
+	app.run();
+	app.destroy();
 	return 0;
 }
