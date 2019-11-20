@@ -12,6 +12,7 @@ int Graphic_handler::init(Camera* camera, float* delta_time)
 		this->error_info = shader.get_error_info();
 		return APP_FAILURE;
 	}
+	shader.use();
 
 	if (camera == nullptr)
 	{
@@ -33,14 +34,6 @@ int Graphic_handler::init(Camera* camera, float* delta_time)
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	// Texture wrapping..
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// Texture filter and mipmapping.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-
 	// Loading textures flipped.
 	stbi_set_flip_vertically_on_load(true);
 
@@ -59,6 +52,15 @@ int Graphic_handler::init(Camera* camera, float* delta_time)
 	glBindTexture(GL_TEXTURE_2D, this->texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
+
+	// Texture wrapping.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// Texture filter and mipmapping.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	stbi_image_free(data);
 
 	return APP_SUCCESS;
@@ -66,7 +68,6 @@ int Graphic_handler::init(Camera* camera, float* delta_time)
 
 void Graphic_handler::update()
 {
-	shader.use();
 	shader.set_mat4("mvp", this->projection_matrix * this->camera->get_view_matrix());
 	std::list<float> mesh = *this->camera->draw_data;
 

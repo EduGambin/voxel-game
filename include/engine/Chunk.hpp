@@ -23,7 +23,8 @@
 #define BLOCK_RIGHT_FACE_BIT 	32	// 100000
 
 #define TEXTURE_LENGTH 			16.0f
-#define TEXTURE_ATLAS_LENGTH 	64.0f
+#define TEXTURE_ATLAS_WIDTH 	64.0f
+#define TEXTURE_ATLAS_HEIGHT	32.0f
 
 namespace Block 
 {
@@ -105,19 +106,6 @@ namespace Block
 		1.0f, 0.0f,  0.0f,	// Right-bottom-front.
 	};
 
-};
-
-const std::array<const float, BLOCK_UVPF> tex_coords =
-{
-	// First triangle.
-	 0.0f,  0.0f,	// Left-down.
-	16.0f,  0.0f,	// Right-down.
-	16.0f, 16.0f,	// Right-up.
-
-	// Second triangle.
-	16.0f, 16.0f,	// Right-up.
-	 0.0f, 16.0f,	// Left-up.
-	0.0f,  0.0f,	// Left-down.
 };
 
 class Chunk
