@@ -41,6 +41,12 @@ void Input_handler::update()
 			case GLFW_KEY_A:
 				camera->move(CAMERA_DIR_LEFT, *this->delta_time);
 				break;
+			case GLFW_KEY_SPACE:
+				camera->move(CAMERA_DIR_UP, *this->delta_time);
+				break;
+			case GLFW_KEY_LEFT_CONTROL:
+				camera->move(CAMERA_DIR_DOWN, *this->delta_time);
+				break;
 			default:
 				break;
 		}
