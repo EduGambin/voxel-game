@@ -37,11 +37,25 @@ void Engine_handler::update()
 			}
 
 			// Adding the new data.
-			if (!this->chunks[i]->added_vertices.empty())
+			if (!this->chunks[i]->added_vertices.empty() && !this->chunks[i]->added_vertices.empty())
 			{
 				std::list<float> new_ver = this->chunks[i]->added_vertices;
-				for (std::list<float>::iterator it = new_ver.begin(); it != new_ver.end(); it++)
-					mesh.push_back((*it));
+				std::list<float> new_uvs = this->chunks[i]->added_uvs;
+
+				std::list<float>::iterator it1 = new_ver.begin();
+				std::list<float>::iterator it2 = new_uvs.begin();
+
+				for (it1 = new_ver.begin(); it1 != new_ver.end(); /* Not needed */)
+				{
+					// New vertice.
+					mesh.push_back((*(it1++)));
+					mesh.push_back((*(it1++)));
+					mesh.push_back((*(it1++)));
+
+					// New uv.
+					mesh.push_back((*(it2++)));
+					mesh.push_back((*(it2++)));
+				}
 			}
 			this->chunks[i]->modified = false;
 			mesh_modified = true;	

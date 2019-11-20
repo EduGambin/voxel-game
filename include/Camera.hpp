@@ -8,10 +8,10 @@
 
 #include "Global.hpp"
 
-#define CAMERA_DEFAULT_YAW			-90.0f
-#define CAMERA_DEFAULT_PITCH		  0.0f
+#define CAMERA_DEFAULT_YAW			 -90.0f
+#define CAMERA_DEFAULT_PITCH		   0.0f
 #define CAMERA_DEFAULT_SPEED		  10.0f
-#define CAMERA_DEFAULT_SENSITIVITY	  0.2f
+#define CAMERA_DEFAULT_SENSITIVITY	   0.2f
 
 #define CAMERA_DIR_FORWARD	0
 #define CAMERA_DIR_BACKWARD	1

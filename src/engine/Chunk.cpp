@@ -1,9 +1,8 @@
 #include "engine/Chunk.hpp"
-#include <iostream>
 
 void Chunk::add_vertices(int face_bits, float x, float y, float z)
 {
-	if (face_bits & FRONT_FACE_BIT)
+	if (face_bits & BLOCK_FRONT_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
@@ -14,7 +13,7 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		}
 	}
 
-	if (face_bits & BACK_FACE_BIT)
+	if (face_bits & BLOCK_BACK_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
@@ -25,7 +24,7 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		}
 	}
 
-	if (face_bits & UP_FACE_BIT)
+	if (face_bits & BLOCK_UP_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
@@ -36,7 +35,7 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		}
 	}
 
-	if (face_bits & DOWN_FACE_BIT)
+	if (face_bits & BLOCK_DOWN_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
@@ -47,7 +46,7 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		}
 	}
 
-	if (face_bits & LEFT_FACE_BIT)
+	if (face_bits & BLOCK_LEFT_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
@@ -58,7 +57,7 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		}
 	}
 
-	if (face_bits & RIGHT_FACE_BIT)
+	if (face_bits & BLOCK_RIGHT_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
@@ -66,6 +65,78 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 			added_vertices.push_back(right_face[k] + x);
 			added_vertices.push_back(right_face[k+1] + y);
 			added_vertices.push_back(right_face[k+2] + z);
+		}
+	}
+}
+
+void Chunk::add_uvs(int face_bits, unsigned int block_type)
+{
+	unsigned int up_texture, block_texture, down_texture;
+	switch (block_type)
+	{
+		case BLOCK_GRASS:
+			up_texture = 0.0f;
+			block_texture = 1.0f;
+			down_texture = 2.0f;
+			break;
+		case BLOCK_DIRT:
+			up_texture = block_texture = down_texture = 2.0f;
+			break;
+		default:
+			break;
+	}
+
+	if (face_bits & BLOCK_FRONT_FACE_BIT)
+	{
+		for(unsigned int k = 0; k < BLOCK_UVPF; k += 2)
+		{
+			added_uvs.push_back(tex_coords[k] + (float)(block_texture % 4) * TEXTURE_LENGTH);
+			added_uvs.push_back(tex_coords[k+1] + (float)(block_texture / 4) * TEXTURE_LENGTH);
+		}
+	}
+
+	if (face_bits & BLOCK_BACK_FACE_BIT)
+	{
+		for(unsigned int k = 0; k < BLOCK_UVPF; k += 2)
+		{
+			added_uvs.push_back(tex_coords[k] + (float)(block_texture % 4) * TEXTURE_LENGTH);
+			added_uvs.push_back(tex_coords[k+1] + (float)(block_texture / 4) * TEXTURE_LENGTH);
+		}
+	}
+
+	if (face_bits & BLOCK_UP_FACE_BIT)
+	{
+		for(unsigned int k = 0; k < BLOCK_UVPF; k += 2)
+		{
+			added_uvs.push_back(tex_coords[k] + (float)(up_texture % 4) * TEXTURE_LENGTH);
+			added_uvs.push_back(tex_coords[k+1] + (float)(up_texture / 4) * TEXTURE_LENGTH);
+		}
+	}
+
+	if (face_bits & BLOCK_DOWN_FACE_BIT)
+	{
+		for(unsigned int k = 0; k < BLOCK_UVPF; k += 2)
+		{
+			added_uvs.push_back(tex_coords[k] + (float)(down_texture % 4) * TEXTURE_LENGTH);
+			added_uvs.push_back(tex_coords[k+1] + (float)(down_texture / 4) * TEXTURE_LENGTH);
+		}
+	}
+
+	if (face_bits & BLOCK_LEFT_FACE_BIT)
+	{
+		for(unsigned int k = 0; k < BLOCK_UVPF; k += 2)
+		{
+			added_uvs.push_back(tex_coords[k] + (float)(block_texture % 4) * TEXTURE_LENGTH);
+			added_uvs.push_back(tex_coords[k+1] + (float)(block_texture / 4) * TEXTURE_LENGTH);
+		}
+	}
+
+	if (face_bits & BLOCK_RIGHT_FACE_BIT)
+	{
+		for(unsigned int k = 0; k < BLOCK_UVPF; k += 2)
+		{
+			added_uvs.push_back(tex_coords[k] + (float)(block_texture % 4) * TEXTURE_LENGTH);
+			added_uvs.push_back(tex_coords[k+1] + (float)(block_texture / 4) * TEXTURE_LENGTH);
 		}
 	}
 }
@@ -80,15 +151,15 @@ void Chunk::load_data()
 		float x, y, z;
 		int face_bits = 0;
 		get_coords(x, y, z, i);
-		if (get_front_block(i) == BLOCK_AIR) face_bits = face_bits | FRONT_FACE_BIT;
-		if (get_back_block(i) == BLOCK_AIR) face_bits = face_bits | BACK_FACE_BIT;
-		if (get_up_block(i) == BLOCK_AIR) face_bits = face_bits | UP_FACE_BIT;
-		if (get_down_block(i) == BLOCK_AIR) face_bits = face_bits | DOWN_FACE_BIT;
-		if (get_left_block(i) == BLOCK_AIR) face_bits = face_bits | LEFT_FACE_BIT;
-		if (get_right_block(i) == BLOCK_AIR) face_bits = face_bits | RIGHT_FACE_BIT;
+		if (get_front_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_FRONT_FACE_BIT;
+		if (get_back_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_BACK_FACE_BIT;
+		if (get_up_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_UP_FACE_BIT;
+		if (get_down_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_DOWN_FACE_BIT;
+		if (get_left_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_LEFT_FACE_BIT;
+		if (get_right_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_RIGHT_FACE_BIT;
 
 		add_vertices(face_bits, x, y, z);
-		// add_uvs(face_bits, this->blocks[i]); // TODO Implement textures.
+		add_uvs(face_bits, this->blocks[i]);
 	}
 }
 
