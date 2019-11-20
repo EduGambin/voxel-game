@@ -35,17 +35,20 @@ void Graphic_handler::update()
 {
 	shader.use();
 	shader.set_mat4("mvp", this->projection_matrix * this->camera->get_view_matrix());
-
 	std::list<float> mesh = *this->camera->draw_data;
-	float vertices[mesh.size()];
-	int i = 0;
-	for (std::list<float>::iterator it = mesh.begin(); it != mesh.end(); it++)
+
+	if (this->camera->is_data_modified)
 	{
-		vertices[i++] = (*it);
+		float vertices[mesh.size()];
+		int i = 0;
+		for (std::list<float>::iterator it = mesh.begin(); it != mesh.end(); it++)
+		{
+			vertices[i++] = (*it);
+		}
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
 	}
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
 
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

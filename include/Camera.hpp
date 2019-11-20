@@ -42,6 +42,9 @@ class Camera
 		// List with all the data to be drawn (vertices and uv's).
 		std::list<float>* draw_data;
 
+		// If the data has been modified or not.
+		bool is_data_modified;
+
 		// Initializes the camera position and euler angles.
 		void init();
 

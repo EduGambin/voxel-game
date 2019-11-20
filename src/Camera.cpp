@@ -20,6 +20,8 @@ void Camera::init()
 	this->yaw = CAMERA_DEFAULT_YAW;
 	this->pitch = CAMERA_DEFAULT_PITCH;
 	this->update_camera_vectors();
+
+	this->is_data_modified = false;
 }
 
 glm::mat4 Camera::get_view_matrix()

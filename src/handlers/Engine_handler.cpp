@@ -17,6 +17,7 @@ int Engine_handler::init(Camera* camera, float* delta_time)
 
 void Engine_handler::update()
 {
+	bool mesh_modified = false;
 	for (unsigned int i = 0; i < this->chunks.size(); i++) 
 	{
 		if (this->chunks[i]->modified)
@@ -42,10 +43,17 @@ void Engine_handler::update()
 				for (std::list<float>::iterator it = new_ver.begin(); it != new_ver.end(); it++)
 					mesh.push_back((*it));
 			}
+			this->chunks[i]->modified = false;
+			mesh_modified = true;	
 		}
-		this->chunks[i]->modified = false;
 	}
-	this->camera->draw_data = &this->mesh;
+	if (mesh_modified)
+	{
+		this->camera->is_data_modified = true;
+		this->camera->draw_data = &this->mesh;
+	}
+	else
+		this->camera->is_data_modified = false;
 }
 
 void Engine_handler::destroy()
