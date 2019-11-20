@@ -7,15 +7,17 @@
 
 #include "Global.hpp"
 #include "Camera.hpp"
-#include "handlers/Graphic_handler.hpp"
 #include "handlers/Input_handler.hpp"
+#include "handlers/Engine_handler.hpp"
+#include "handlers/Graphic_handler.hpp"
 
 class Application
 {
 	private:
 		GLFWwindow* window;
-		Graphic_handler gh;	// Needs to be initialized.
 		Input_handler ih;
+		Engine_handler eh;	// Needs to be initialized.
+		Graphic_handler gh;	// Needs to be initialized.
 		Camera camera;		// Needs to be initialized.
 
 		float delta_time;

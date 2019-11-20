@@ -1,4 +1,4 @@
-#include "Shader.hpp"
+#include "graphics/Shader.hpp"
 
 int Shader::make_program(const char* vertex_path, const char* fragment_path)
 {

@@ -1,4 +1,5 @@
 #include "handlers/Input_handler.hpp"
+#include <iostream>
 
 // Auxiliar variables for the keyboard.
 std::list<int> pressed_keys;
@@ -46,6 +47,7 @@ void Input_handler::update()
 	}
 
 	this->camera->turn((float) x_mov, (float) y_mov);
+	x_mov = y_mov = 0.0f;
 }
 
 void Input_handler::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -67,6 +69,7 @@ void Input_handler::cursor_position_callback(GLFWwindow* window, double xpos, do
 	{
 		last_x = xpos;
 		last_y = ypos;
+		mouse_set = true;
 	}
 	else
 	{

@@ -58,18 +58,31 @@ int Application::init()
 	// Initializing the camera.
 	this->camera.init();
 
-	// Initializing the graphic handler.
-	if (this->gh.init(&camera, &this->delta_time))
-	{
-		std::cerr << this->gh.get_error_info() << std::endl;
-		std::cerr << "Failed to initialize the graphic handler" << std::endl;
-	}
+	// Setting the cursor mode.
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Initializing the input handler.
 	if (this->ih.init(&camera, &this->delta_time))
 	{
 		std::cerr << this->gh.get_error_info() << std::endl;
 		std::cerr << "Failed to initialize the input handler" << std::endl;
+		return APP_FAILURE;
+	}
+
+	// Initializing the engine handler.
+	if (this->eh.init(&camera, &this->delta_time))
+	{
+		std::cerr << this->eh.get_error_info() << std::endl;
+		std::cerr << "Failed to initialize the engine handler" << std::endl;
+		return APP_FAILURE;
+	}
+
+	// Initializing the graphic handler.
+	if (this->gh.init(&camera, &this->delta_time))
+	{
+		std::cerr << this->gh.get_error_info() << std::endl;
+		std::cerr << "Failed to initialize the graphic handler" << std::endl;
+		return APP_FAILURE;
 	}
 
 	return APP_SUCCESS;
@@ -77,6 +90,8 @@ int Application::init()
 
 void Application::destroy()
 {
+	this->eh.destroy();
+	this->gh.destroy();
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
 }
@@ -94,10 +109,8 @@ void Application::run()
 
 		// Updating everything else.
 		glfwPollEvents();
-		glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
 		this->ih.update();
-		// TODO Implement the engine update.
+		this->eh.update();
 		this->gh.update();
 		glfwSwapBuffers(this->window);
 	}

@@ -1,6 +1,8 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
+#include <list>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -8,8 +10,8 @@
 
 #define CAMERA_DEFAULT_YAW			-90.0f
 #define CAMERA_DEFAULT_PITCH		  0.0f
-#define CAMERA_DEFAULT_SPEED		  5.0f
-#define CAMERA_DEFAULT_SENSITIVITY	  0.1f
+#define CAMERA_DEFAULT_SPEED		  7.5f
+#define CAMERA_DEFAULT_SENSITIVITY	  0.2f
 
 #define CAMERA_DIR_FORWARD	0
 #define CAMERA_DIR_BACKWARD	1
@@ -37,6 +39,10 @@ class Camera
 		void update_camera_vectors();
 
 	public:
+		// List with all the data to be drawn (vertices and uv's).
+		std::list<float>* draw_data;
+
+		// Initializes the camera position and euler angles.
 		void init();
 
 		// Returns the view matrix calculated using Euler Angles and the LookAt Matrix
