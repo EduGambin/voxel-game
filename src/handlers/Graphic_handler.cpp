@@ -1,5 +1,10 @@
 #include "handlers/Graphic_handler.hpp"
 
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#endif
+#include "stb_image.h"
+
 int Graphic_handler::init(Camera* camera, float* delta_time)
 {
 	if (shader.make_program(GH_VERTEX_PATH, GH_FRAGMENT_PATH))
@@ -28,6 +33,34 @@ int Graphic_handler::init(Camera* camera, float* delta_time)
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+	// Texture wrapping..
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// Texture filter and mipmapping.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+
+	// Loading textures flipped.
+	stbi_set_flip_vertically_on_load(true);
+
+	// Load the texture atlas.
+	int width, height, channels;
+	unsigned char* data = stbi_load("resources/textures.png", &width, &height, &channels,
+		STBI_rgb);
+	if (!data)
+	{
+		this->error_info = "Failed to load texture";
+		return APP_FAILURE;
+	}
+	
+	// Passing the image to the GPU.
+	glGenTextures(1, &this->texture);
+	glBindTexture(GL_TEXTURE_2D, this->texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	stbi_image_free(data);
+
 	return APP_SUCCESS;
 }
 
@@ -46,14 +79,15 @@ void Graphic_handler::update()
 			vertices[i++] = (*it);
 		}
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
 	}
 
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawArrays(GL_TRIANGLES, 0, mesh.size());
 }
 

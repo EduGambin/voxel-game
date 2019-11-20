@@ -34,6 +34,9 @@ class Graphic_handler
 		// OpenGL vertex objects.
 		unsigned int vao, vbo;
 
+		// Texture atlas with all the existing textures.
+		unsigned int texture;
+
 	public:
 		// Initializes the graphic handler. Should be called at the app initialization.
 		// Returns APP_SUCCESS on success and APP_FAILURE otherwise.

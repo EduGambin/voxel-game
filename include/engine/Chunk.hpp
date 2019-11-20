@@ -9,17 +9,21 @@
 #define CHUNK_AREA 		256
 #define CHUNK_VOLUME 	4096
 
-#define BLOCK_VPF 18
-#define BLOCK_AIR 	0
-#define BLOCK_GRASS 1
-#define BLOCK_DIRT	2
+#define BLOCK_VPF 	18
+#define BLOCK_UVPF	12
+#define BLOCK_AIR 	 0
+#define BLOCK_GRASS  1
+#define BLOCK_DIRT	 2
 
-#define FRONT_FACE_BIT 	1	// 000001
-#define BACK_FACE_BIT 	2	// 000010
-#define UP_FACE_BIT		4	// 000100
-#define DOWN_FACE_BIT 	8	// 001000
-#define LEFT_FACE_BIT 	16	// 010000
-#define RIGHT_FACE_BIT 	32	// 100000
+#define BLOCK_FRONT_FACE_BIT 	1	// 000001
+#define BLOCK_BACK_FACE_BIT 	2	// 000010
+#define BLOCK_UP_FACE_BIT		4	// 000100
+#define BLOCK_DOWN_FACE_BIT 	8	// 001000
+#define BLOCK_LEFT_FACE_BIT 	16	// 010000
+#define BLOCK_RIGHT_FACE_BIT 	32	// 100000
+
+#define TEXTURE_LENGTH 			16.0f
+#define TEXTURE_ATLAS_LENGTH 	64.0f
 
 namespace Block 
 {
@@ -103,6 +107,19 @@ namespace Block
 
 };
 
+const std::array<const float, BLOCK_UVPF> tex_coords =
+{
+	// First triangle.
+	 0.0f,  0.0f,	// Left-down.
+	16.0f,  0.0f,	// Right-down.
+	16.0f, 16.0f,	// Right-up.
+
+	// Second triangle.
+	16.0f, 16.0f,	// Right-up.
+	 0.0f, 16.0f,	// Left-up.
+	0.0f,  0.0f,	// Left-down.
+};
+
 class Chunk
 {
 	private:
@@ -116,7 +133,7 @@ class Chunk
 		// Adding the vertices sepcified by the bits and the coordinates.
 		void add_vertices(int face_bits, float x, float y, float z);
 		// Adding the uv coordinates of a given face and a certain block.
-		void add_uvs(int face_bits, unsigned int block_type);	// TODO Implement textures.
+		void add_uvs(int face_bits, unsigned int block_type);
 		// Load all the just created data to the added data.
 		void load_data();
 
