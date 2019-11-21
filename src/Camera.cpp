@@ -47,10 +47,10 @@ void Camera::move(int direction, float delta_time)
 			this->position += this->right * velocity;
 			break;
 		case CAMERA_DIR_UP:
-			this->position += this->up * velocity;
+			this->position += APP_UP_DIR * velocity;
 			break;
 		case CAMERA_DIR_DOWN:
-			this->position -= this->up * velocity;
+			this->position -= APP_UP_DIR * velocity;
 			break;
 		default:
 			break;

@@ -11,10 +11,13 @@ int Engine_handler::init(Camera* camera, float* delta_time)
 	this->delta_time = delta_time;
 
 	this->chunks[0] = new Chunk();
-	this->chunks[0]->init(0u, 0u, 0u);
-
 	this->chunks[1] = new Chunk();
-	this->chunks[1]->init(0u, 1u, 0u);
+
+	Chunk* brothers_0[] = {nullptr, nullptr, nullptr, nullptr, nullptr, this->chunks[1]};
+	Chunk* brothers_1[] = {nullptr, nullptr, nullptr, nullptr, this->chunks[0], nullptr};
+
+	this->chunks[0]->init(0, 0, 0, brothers_0);
+	this->chunks[1]->init(1, 0, 0, brothers_1);
 
 	return APP_SUCCESS;
 }
@@ -22,44 +25,34 @@ int Engine_handler::init(Camera* camera, float* delta_time)
 void Engine_handler::update()
 {
 	bool mesh_modified = false;
-	for (unsigned int i = 0; i < this->chunks.size(); i++) 
+	for (unsigned int i = 0u; i < this->chunks.size(); i++)
 	{
 		if (this->chunks[i]->modified)
 		{
 			// Removing the deleted data.
-			if (this->chunks[i]->removed_data.second != 0)
+			if (this->chunks[i]->removed_data.second != 0u)
 			{
-				for (std::list<float>::iterator it = mesh.begin(); it != mesh.end(); it++)
+				for (std::list<float>::iterator it = this->mesh.begin(); it != this->mesh.end(); it++)
 				{
 					if ((*it) == this->chunks[i]->removed_data.first)
 					{
-						for (unsigned int j = 0; j < this->chunks[i]->removed_data.second; j++)
-							mesh.erase(it++);
+						// Once we find the first element to be removed, we remove all.
+						for (int j = 0; j < this->chunks[i]->removed_data.second; j++)
+							this->mesh.erase(it++);
 						break;
 					}
 				}
+				this->chunks[i]->removed_data.second = 0u;
 			}
 
 			// Adding the new data.
-			if (!this->chunks[i]->added_vertices.empty() && !this->chunks[i]->added_vertices.empty())
+			if (!this->chunks[i]->added_data.empty())
 			{
-				std::list<float> new_ver = this->chunks[i]->added_vertices;
-				std::list<float> new_uvs = this->chunks[i]->added_uvs;
-
-				std::list<float>::iterator it1 = new_ver.begin();
-				std::list<float>::iterator it2 = new_uvs.begin();
-
-				for (it1 = new_ver.begin(); it1 != new_ver.end(); /* Not needed */)
+				for (std::list<float>::iterator it = this->chunks[i]->added_data.begin(); it != this->chunks[i]->added_data.end(); it++)
 				{
-					// New vertice.
-					mesh.push_back((*(it1++)));
-					mesh.push_back((*(it1++)));
-					mesh.push_back((*(it1++)));
-
-					// New uv.
-					mesh.push_back((*(it2++)));
-					mesh.push_back((*(it2++)));
+					this->mesh.emplace_back(*it);
 				}
+				this->chunks[i]->added_data.clear();
 			}
 			this->chunks[i]->modified = false;
 			mesh_modified = true;	
