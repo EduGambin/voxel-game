@@ -11,6 +11,10 @@ int Engine_handler::init(Camera* camera, float* delta_time)
 	this->delta_time = delta_time;
 
 	this->chunks[0] = new Chunk();
+	this->chunks[0]->init(0u, 0u, 0u);
+
+	this->chunks[1] = new Chunk();
+	this->chunks[1]->init(0u, 1u, 0u);
 
 	return APP_SUCCESS;
 }

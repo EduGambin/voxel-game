@@ -2,14 +2,18 @@
 
 void Chunk::add_vertices(int face_bits, float x, float y, float z)
 {
+	float chunk_x = (float)(this->x * CHUNK_LENGTH);
+	float chunk_y = (float)(this->y * CHUNK_LENGTH);
+	float chunk_z = (float)(this->z * CHUNK_LENGTH);
+
 	if (face_bits & BLOCK_FRONT_FACE_BIT)
 	{
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
 			std::array<const float, BLOCK_VPF> front_face = Block::front_face;
-			added_vertices.push_back(front_face[k] + x);
-			added_vertices.push_back(front_face[k+1] + y);
-			added_vertices.push_back(front_face[k+2] + z);
+			this->added_vertices.push_back(front_face[k] + x + chunk_x);
+			this->added_vertices.push_back(front_face[k+1] + y + chunk_y);
+			this->added_vertices.push_back(front_face[k+2] + z + chunk_z);
 		}
 	}
 
@@ -18,9 +22,9 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
 			std::array<const float, BLOCK_VPF> back_face = Block::back_face;
-			added_vertices.push_back(back_face[k] + x);
-			added_vertices.push_back(back_face[k+1] + y);
-			added_vertices.push_back(back_face[k+2] + z);
+			this->added_vertices.push_back(back_face[k] + x + chunk_x);
+			this->added_vertices.push_back(back_face[k+1] + y + chunk_y);
+			this->added_vertices.push_back(back_face[k+2] + z + chunk_z);
 		}
 	}
 
@@ -29,9 +33,9 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
 			std::array<const float, BLOCK_VPF> up_face = Block::up_face;
-			added_vertices.push_back(up_face[k] + x);
-			added_vertices.push_back(up_face[k+1] + y);
-			added_vertices.push_back(up_face[k+2] + z);
+			this->added_vertices.push_back(up_face[k] + x + chunk_x);
+			this->added_vertices.push_back(up_face[k+1] + y + chunk_y);
+			this->added_vertices.push_back(up_face[k+2] + z + chunk_z);
 		}
 	}
 
@@ -40,9 +44,9 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
 			std::array<const float, BLOCK_VPF> down_face = Block::down_face;
-			added_vertices.push_back(down_face[k] + x);
-			added_vertices.push_back(down_face[k+1] + y);
-			added_vertices.push_back(down_face[k+2] + z);
+			this->added_vertices.push_back(down_face[k] + x + chunk_x);
+			this->added_vertices.push_back(down_face[k+1] + y + chunk_y);
+			this->added_vertices.push_back(down_face[k+2] + z + chunk_z);
 		}
 	}
 
@@ -51,9 +55,9 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
 			std::array<const float, BLOCK_VPF> left_face = Block::left_face;
-			added_vertices.push_back(left_face[k] + x);
-			added_vertices.push_back(left_face[k+1] + y);
-			added_vertices.push_back(left_face[k+2] + z);
+			this->added_vertices.push_back(left_face[k] + x);
+			this->added_vertices.push_back(left_face[k+1] + y + chunk_y);
+			this->added_vertices.push_back(left_face[k+2] + z + chunk_z);
 		}
 	}
 
@@ -62,9 +66,9 @@ void Chunk::add_vertices(int face_bits, float x, float y, float z)
 		for(unsigned int k = 0; k < BLOCK_VPF; k += 3)
 		{
 			std::array<const float, BLOCK_VPF> right_face = Block::right_face;
-			added_vertices.push_back(right_face[k] + x);
-			added_vertices.push_back(right_face[k+1] + y);
-			added_vertices.push_back(right_face[k+2] + z);
+			this->added_vertices.push_back(right_face[k] + x);
+			this->added_vertices.push_back(right_face[k+1] + y + chunk_y);
+			this->added_vertices.push_back(right_face[k+2] + z + chunk_z);
 		}
 	}
 }
@@ -94,163 +98,163 @@ void Chunk::add_uvs(int face_bits, unsigned int block_type)
 	if (face_bits & BLOCK_FRONT_FACE_BIT)
 	{
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Down-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 	}
 
 	if (face_bits & BLOCK_BACK_FACE_BIT)
 	{
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Down-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 	}
 
 	if (face_bits & BLOCK_UP_FACE_BIT)
 	{
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(up_texture % 4));
-		added_uvs.push_back(norm_height * (float)(up_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(up_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(up_texture / 4));
 
 		// Down-right
-		added_uvs.push_back(norm_width * (float)(up_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)(up_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(up_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)(up_texture / 4));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(up_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((up_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(up_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((up_texture / 4) + 1));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(up_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((up_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(up_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((up_texture / 4) + 1));
 
 		// Up-left
-		added_uvs.push_back(norm_width * (float)(up_texture % 4));
-		added_uvs.push_back(norm_height * (float)((up_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(up_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)((up_texture / 4) + 1));
 
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(up_texture % 4));
-		added_uvs.push_back(norm_height * (float)(up_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(up_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(up_texture / 4));
 	}
 
 	if (face_bits & BLOCK_DOWN_FACE_BIT)
 	{
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(down_texture % 4));
-		added_uvs.push_back(norm_height * (float)(down_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(down_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(down_texture / 4));
 
 		// Down-right
-		added_uvs.push_back(norm_width * (float)(down_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)(down_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(down_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)(down_texture / 4));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(down_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((down_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(down_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((down_texture / 4) + 1));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(down_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((down_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(down_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((down_texture / 4) + 1));
 
 		// Up-left
-		added_uvs.push_back(norm_width * (float)(down_texture % 4));
-		added_uvs.push_back(norm_height * (float)((down_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(down_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)((down_texture / 4) + 1));
 
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(down_texture % 4));
-		added_uvs.push_back(norm_height * (float)(down_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(down_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(down_texture / 4));
 	}
 
 	if (face_bits & BLOCK_LEFT_FACE_BIT)
 	{
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Down-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 	}
 
 	if (face_bits & BLOCK_RIGHT_FACE_BIT)
 	{
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Down-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-right
-		added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture + 1 % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Up-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)((block_texture / 4) + 1));
 
 		// Down-left
-		added_uvs.push_back(norm_width * (float)(block_texture % 4));
-		added_uvs.push_back(norm_height * (float)(block_texture / 4));
+		this->added_uvs.push_back(norm_width * (float)(block_texture % 4));
+		this->added_uvs.push_back(norm_height * (float)(block_texture / 4));
 	}
 }
 
@@ -263,31 +267,36 @@ void Chunk::load_data()
 
 		float x, y, z;
 		int face_bits = 0;
-		get_coords(x, y, z, i);
-		if (get_front_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_FRONT_FACE_BIT;
-		if (get_back_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_BACK_FACE_BIT;
-		if (get_up_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_UP_FACE_BIT;
-		if (get_down_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_DOWN_FACE_BIT;
-		if (get_left_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_LEFT_FACE_BIT;
-		if (get_right_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_RIGHT_FACE_BIT;
+		this->get_coords(x, y, z, i);
+		if (this->get_front_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_FRONT_FACE_BIT;
+		if (this->get_back_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_BACK_FACE_BIT;
+		if (this->get_up_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_UP_FACE_BIT;
+		if (this->get_down_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_DOWN_FACE_BIT;
+		if (this->get_left_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_LEFT_FACE_BIT;
+		if (this->get_right_block(i) == BLOCK_AIR) face_bits = face_bits | BLOCK_RIGHT_FACE_BIT;
 
-		add_vertices(face_bits, x, y, z);
-		add_uvs(face_bits, this->blocks[i]);
+		this->add_vertices(face_bits, x, y, z);
+		this->add_uvs(face_bits, this->blocks[i]);
 	}
 }
 
-Chunk::Chunk()
+int Chunk::init(unsigned int x, unsigned int y, unsigned int z)
 {
+	this->x = x;
+	this->y = y;
+	this->z = z;
+
 	for (int i = 0; i < CHUNK_VOLUME; i++)
 	{
 		if (i / CHUNK_AREA == CHUNK_LENGTH - 1) this->blocks[i] = BLOCK_GRASS;
 		else this->blocks[i] = BLOCK_DIRT;
 	}
-	modified = true;
-	x = y = z = 0;
-	removed_data = {0.0f, 0};
 
-	load_data();
+	this->modified = true;
+	this->removed_data = {0.0f, 0u};
+	this->load_data();
+
+	return APP_SUCCESS;
 }
 
 void Chunk::get_coords(float& x, float& y, float& z, const unsigned int& index)

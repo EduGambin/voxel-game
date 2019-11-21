@@ -8,7 +8,7 @@
 #include "Camera.hpp"
 #include "engine/Chunk.hpp"
 
-#define EH_MAX_LOADED_CHUNKS 1
+#define EH_MAX_LOADED_CHUNKS 2
 
 class Engine_handler
 {

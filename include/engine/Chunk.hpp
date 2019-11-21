@@ -5,8 +5,10 @@
 #include <list>
 #include <utility>
 
-#define CHUNK_LENGTH 	16
-#define CHUNK_AREA 		256
+#include "Global.hpp"
+
+#define CHUNK_LENGTH 	  16
+#define CHUNK_AREA 		 256
 #define CHUNK_VOLUME 	4096
 
 #define BLOCK_VPF 	18
@@ -15,10 +17,10 @@
 #define BLOCK_GRASS  1
 #define BLOCK_DIRT	 2
 
-#define BLOCK_FRONT_FACE_BIT 	1	// 000001
-#define BLOCK_BACK_FACE_BIT 	2	// 000010
-#define BLOCK_UP_FACE_BIT		4	// 000100
-#define BLOCK_DOWN_FACE_BIT 	8	// 001000
+#define BLOCK_FRONT_FACE_BIT 	 1	// 000001
+#define BLOCK_BACK_FACE_BIT 	 2	// 000010
+#define BLOCK_UP_FACE_BIT		 4	// 000100
+#define BLOCK_DOWN_FACE_BIT 	 8	// 001000
 #define BLOCK_LEFT_FACE_BIT 	16	// 010000
 #define BLOCK_RIGHT_FACE_BIT 	32	// 100000
 
@@ -138,8 +140,8 @@ class Chunk
 		// List of removed data. Should be clear unless modified is true.
 		std::pair<float, unsigned int> removed_data;
 
-		// Constructor.
-		Chunk();
+		// Initializer.
+		int init(unsigned int x, unsigned int y, unsigned int z);
 
 		// Returns the coordinates of the given index.
 		static void get_coords(float& x, float& y, float& z, const unsigned int& index);
