@@ -1,5 +1,4 @@
 #include "engine/Chunk.hpp"
-#include <iostream>
 
 void get_coords(float& x, float& y, float& z, const int& index)
 {
@@ -246,11 +245,7 @@ int Chunk::get_face_block(const int& face_bit, const int& index) const
 		if (index % CHUNK_LENGTH == CHUNK_LENGTH - 1)
 		{
 			if (!this->brothers[5]) return BLOCK_AIR;
-			else 
-			{
-				if (index == 15) std::cout << index - (CHUNK_LENGTH - 1) << " " <<  this->brothers[5]->blocks[index - (CHUNK_LENGTH - 1)] << std::endl;
-				return this->brothers[5]->blocks[index - (CHUNK_LENGTH - 1)];
-			}
+			else return this->brothers[5]->blocks[index - (CHUNK_LENGTH - 1)];
 		}
 		else return blocks[index + 1];
 	}

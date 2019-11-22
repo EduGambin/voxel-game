@@ -22,8 +22,9 @@ int Graphic_handler::init(Camera* camera, float* delta_time)
 	this->camera = camera;
 	this->delta_time = delta_time;
 
-	// Enabling the z-depth test.
+	// Enabling the z-depth test, face culling and antialiasing.
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	// Creating the projection matrix as it will be constant.
 	this->projection_matrix = glm::perspective(APP_FOV, APP_ASPCET_RATIO, 0.1f, 100.0f);

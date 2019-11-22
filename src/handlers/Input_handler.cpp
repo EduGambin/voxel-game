@@ -1,5 +1,4 @@
 #include "handlers/Input_handler.hpp"
-#include <iostream>
 
 // Auxiliar variables for the keyboard.
 std::list<int> pressed_keys;
