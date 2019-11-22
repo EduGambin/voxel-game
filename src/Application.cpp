@@ -30,6 +30,7 @@ int Application::init()
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	// Creating the window.
 	this->window = glfwCreateWindow(APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT, APP_NAME, NULL, NULL);
@@ -40,6 +41,7 @@ int Application::init()
 	}
 	// Making current context.
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(0);
 
 	// Initializing GLAD.
 	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
@@ -106,6 +108,7 @@ void Application::run()
 		float current_frame = glfwGetTime();
 		this->delta_time = current_frame - last_frame;
 		last_frame = current_frame;
+		std::cout << 1/delta_time << std::endl;
 
 		// Updating everything else.
 		glfwPollEvents();
