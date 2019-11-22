@@ -1,4 +1,5 @@
 #include "handlers/Graphic_handler.hpp"
+#include <iostream>
 
 #ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
