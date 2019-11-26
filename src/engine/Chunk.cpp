@@ -98,7 +98,28 @@ const float face_uvs[] =
 									0.0f,									0.0f,	// Left-down.
 };
 
-void Chunk::add_face_data(const float* face_vertices, const float& world_x, const float& world_y, const float& world_z, const float& s_offset, const float& t_offset)
+const float normals[] =
+{
+	// Front face.
+	 0.0f,  0.0f,  1.0f,
+
+	// Back face.
+	 0.0f,  0.0f, -1.0f,
+
+	// Up face.
+	 0.0f,  1.0f,  0.0f,
+
+	// Down face.
+	 0.0f, -1.0f,  0.0f,
+
+	// Left face.
+	-1.0f,  0.0f,  0.0f,
+
+	// Right face.
+	 1.0f,  0.0f,  0.0f
+};
+
+void Chunk::add_face_data(const float* face_vertices, const float& world_x, const float& world_y, const float& world_z, const float& s_offset, const float& t_offset, const int& face)
 {
 	int i, j;
 	i = j = 0;
@@ -110,6 +131,9 @@ void Chunk::add_face_data(const float* face_vertices, const float& world_x, cons
 		this->added_data.emplace_back(face_vertices[i++] + world_z);
 		this->added_data.emplace_back(face_uvs[j++] + s_offset);
 		this->added_data.emplace_back(face_uvs[j++] + t_offset);
+		this->added_data.emplace_back(normals[face]);
+		this->added_data.emplace_back(normals[face + 1]);
+		this->added_data.emplace_back(normals[face + 2]);
 	}
 }
 
@@ -138,14 +162,14 @@ void Chunk::add_faces(const int& face_bits, const int& block_type, const float& 
 			break;
 	}
 
-	if (face_bits & BLOCK_FRONT_FACE_BIT) this->add_face_data(front_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height);
-	if (face_bits & BLOCK_BACK_FACE_BIT) this->add_face_data(back_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height);
+	if (face_bits & BLOCK_FRONT_FACE_BIT) this->add_face_data(front_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height, 0);
+	if (face_bits & BLOCK_BACK_FACE_BIT) this->add_face_data(back_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height, 3);
 
-	if (face_bits & BLOCK_UP_FACE_BIT) this->add_face_data(up_face_vertices, world_x, world_y, world_z, (float)((up_texture % 4) * norm_width), (float)(up_texture / 4) * norm_height);
-	if (face_bits & BLOCK_DOWN_FACE_BIT) this->add_face_data(down_face_vertices, world_x, world_y, world_z, (float)((down_texture % 4) * norm_width), (float)(down_texture / 4) * norm_height);
+	if (face_bits & BLOCK_UP_FACE_BIT) this->add_face_data(up_face_vertices, world_x, world_y, world_z, (float)((up_texture % 4) * norm_width), (float)(up_texture / 4) * norm_height, 6);
+	if (face_bits & BLOCK_DOWN_FACE_BIT) this->add_face_data(down_face_vertices, world_x, world_y, world_z, (float)((down_texture % 4) * norm_width), (float)(down_texture / 4) * norm_height, 9);
 
-	if (face_bits & BLOCK_LEFT_FACE_BIT) this->add_face_data(left_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height);
-	if (face_bits & BLOCK_RIGHT_FACE_BIT) this->add_face_data(right_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height);
+	if (face_bits & BLOCK_LEFT_FACE_BIT) this->add_face_data(left_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height, 12);
+	if (face_bits & BLOCK_RIGHT_FACE_BIT) this->add_face_data(right_face_vertices, world_x, world_y, world_z, (float)((block_texture % 4) * norm_width), (float)(block_texture / 4) * norm_height, 15);
 }
 void Chunk::load_data()
 {
