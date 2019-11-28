@@ -197,7 +197,12 @@ void Chunk::load_data()
 
 Chunk::Chunk()
 {
-	for (int i = 0; i < CHUNK_VOLUME; i++) this->blocks[i] = BLOCK_GRASS;
+	for (int i = 0; i < CHUNK_VOLUME; i++)
+	{
+		
+		if (i / CHUNK_AREA == CHUNK_LENGTH - 1) this->blocks[i] = BLOCK_GRASS;
+		else this->blocks[i] = BLOCK_DIRT;
+	}
 }
 
 int Chunk::init(int x, int y, int z, Chunk** brothers)
