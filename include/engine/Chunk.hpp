@@ -44,7 +44,7 @@ class Chunk
 		Chunk* brothers[CHUNK_BROTHERS];
 
 		// Adds a single face to the added data in the correct order of coordinates and uv's.
-		void add_face_data(const float* face_vertices, const float& world_x, const float& world_y, const float& world_z, const float& s_offset, const float& t_offset);
+		void add_face_data(const float* face_vertices, const float& world_x, const float& world_y, const float& world_z, const float& s_offset, const float& t_offset, const int& face);
 		// Adds all the drawable faces to the added data.
 		void add_faces(const int& face_bits, const int& block_type, const float& x, const float& y, const float& z);
 		// Load all the just created data to the added data.
