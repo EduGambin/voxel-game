@@ -16,11 +16,14 @@
 #define GH_VERTEX_PATH "shaders/vertex.glsl"
 #define GH_FRAGMENT_PATH "shaders/fragment.glsl"
 
+#define GH_FB_VERTEX_PATH "shaders/fb_vertex.glsl"
+#define GH_FB_FRAGMENT_PATH "shaders/fb_fragment.glsl"
+
 class Graphic_handler
 {
 	private:
-		// Shader program.
-		Shader shader;
+		// Shader programs.
+		Shader shader, screen_shader;
 		// Holds the error info.
 		std::string error_info;
 		// Projection matrix.
@@ -31,8 +34,8 @@ class Graphic_handler
 		// Delta time shared among all handlers.
 		float* delta_time;
 
-		// OpenGL vertex objects.
-		unsigned int vao, vbo;
+		// OpenGL objects.
+		unsigned int vao, vbo, fbo, fbo_texture, rbo;
 
 		// Texture atlas with all the existing textures.
 		unsigned int texture;

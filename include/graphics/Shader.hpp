@@ -24,6 +24,8 @@ class Shader
 		int make_program(const char* vertex_path, const char* fragment_path);
 		// Use or activate the shader.
 		void use();
+		// Remove the active shader from being used.
+		void remove();
 
 		// Uniform functions.
 		void set_bool(const std::string &name, const bool& value) const;
