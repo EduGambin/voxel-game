@@ -30,6 +30,7 @@ int Application::init()
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	// Creating the window.
 	this->window = glfwCreateWindow(APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT, APP_NAME, NULL, NULL);

@@ -88,14 +88,14 @@ const float right_face_vertices[] =
 const float face_uvs[] =
 {
 	// First triangle.
-									0.0f,									0.0f,	// Left-down.
-	TEXTURE_LENGTH / TEXTURE_ATLAS_WIDTH, 									0.0f,	// Right-down.
-	TEXTURE_LENGTH / TEXTURE_ATLAS_WIDTH,  TEXTURE_LENGTH / TEXTURE_ATLAS_HEIGHT,	// Right-up.
+	TEXTURE_PIXEL_WIDTH,											TEXTURE_PIXEL_HEIGHT,											// Left-down.
+	TEXTURE_PIXEL_WIDTH + TEXTURE_LENGTH * TEXTURE_PIXEL_WIDTH,		TEXTURE_PIXEL_HEIGHT,											// Right-down.
+	TEXTURE_PIXEL_WIDTH + TEXTURE_LENGTH * TEXTURE_PIXEL_WIDTH,		TEXTURE_PIXEL_HEIGHT + TEXTURE_LENGTH * TEXTURE_PIXEL_HEIGHT,	// Right-up.
 
 	// Second triangle.
-	TEXTURE_LENGTH / TEXTURE_ATLAS_WIDTH,  TEXTURE_LENGTH / TEXTURE_ATLAS_HEIGHT,	// Right-up.
-									0.0f,  TEXTURE_LENGTH / TEXTURE_ATLAS_HEIGHT,	// Left-up.
-									0.0f,									0.0f,	// Left-down.
+	TEXTURE_PIXEL_WIDTH + TEXTURE_LENGTH * TEXTURE_PIXEL_WIDTH,		TEXTURE_PIXEL_HEIGHT + TEXTURE_LENGTH * TEXTURE_PIXEL_HEIGHT,	// Right-up.
+	TEXTURE_PIXEL_WIDTH,											TEXTURE_PIXEL_HEIGHT + TEXTURE_LENGTH * TEXTURE_PIXEL_HEIGHT,	// Left-up.
+	TEXTURE_PIXEL_WIDTH,											TEXTURE_PIXEL_HEIGHT,											// Left-down.
 };
 
 const float normals[] =
@@ -143,8 +143,8 @@ void Chunk::add_faces(const int& face_bits, const int& block_type, const float& 
 	float world_y = (float)(this->y * CHUNK_LENGTH) + y;
 	float world_z = (float)(this->z * CHUNK_LENGTH) + z;
 
-	float norm_width = TEXTURE_LENGTH / TEXTURE_ATLAS_WIDTH;
-	float norm_height = TEXTURE_LENGTH / TEXTURE_ATLAS_HEIGHT;
+	float norm_width = TEXTURE_CELL_LENGTH / TEXTURE_ATLAS_WIDTH;
+	float norm_height = TEXTURE_CELL_LENGTH / TEXTURE_ATLAS_HEIGHT;
 
 	int up_texture, block_texture, down_texture;
 	switch (block_type)

@@ -30,8 +30,11 @@
 
 // Texture definitions.
 #define TEXTURE_LENGTH 			16.0f
-#define TEXTURE_ATLAS_WIDTH 	64.0f
-#define TEXTURE_ATLAS_HEIGHT	32.0f
+#define TEXTURE_CELL_LENGTH		18.0f
+#define TEXTURE_ATLAS_WIDTH 	72.0f
+#define TEXTURE_ATLAS_HEIGHT	36.0f
+#define TEXTURE_PIXEL_WIDTH		1.0f / 72.0f
+#define TEXTURE_PIXEL_HEIGHT	1.0f / 36.0f
 
 class Chunk
 {
