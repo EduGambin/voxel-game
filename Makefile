@@ -15,12 +15,12 @@ EXECUTABLE	:= main.out
 
 all: $(BIN)/$(EXECUTABLE)
 
-run: clean all
-	clear
-	./$(BIN)/$(EXECUTABLE)
-
 $(BIN)/$(EXECUTABLE): $(SRC)/*.c* $(SRC2)/*.cpp $(SRC3)/*.cpp $(SRC4)/*.cpp
+	-mkdir -p $(BIN)
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
 
 clean:
 	-rm $(BIN)/*
+
+run: all
+	./$(BIN)/$(EXECUTABLE)
