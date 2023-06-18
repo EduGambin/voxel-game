@@ -1,10 +1,14 @@
-# Minecraft in C++
+# Voxel Game
+
+This is a simple voxel game I made long time ago using C++, OpenGL and the GLM library.
 
 ## Usage
-To correctly compile and run the game, you must have **g++** and **make** installed. First you need to create a new directory called *bin*, as it is not created. For linux users:
+Ensure you have the OpenGL, GLM, and GLFW libraries installed in your system. Clone the repository, and then run
+```bash
+cd voxel-game
+make run
+```
 
-```
-mkdir bin
-make
-./bin/main.out
-```
+## Contributing
+
+This is an old project, so there is not really a reason to contribute. If you still want to, you can by creating a pull request
